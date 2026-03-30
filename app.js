@@ -9,7 +9,7 @@ const LINKUP_API_KEY = process.env.LINKUP_API_KEY;
 const LINKUP_BASE_URL = 'https://api.linkup.so/v1';
 console.log({LINKUP_API_KEY})
 app.get('/health', async () => {
-  return { status: 'ok', version: '1.1.0' };
+  return { status: 'ok', version: '1.2.0' };
 });
 
 app.get('/', async () => {
