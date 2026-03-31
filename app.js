@@ -2,20 +2,25 @@ import Fastify from 'fastify';
 import axios from 'axios';
 import 'dotenv/config'; 
 
-//this is an api for us to look for obs in our area. The / route will return all endpoints as array
+// This is an API for us to look for jobs in our area. 
+// The / route will return all endpoints as an array.
 const app = Fastify({ logger: true });
 
 const LINKUP_API_KEY = process.env.LINKUP_API_KEY;
 const LINKUP_BASE_URL = 'https://api.linkup.so/v1';
-console.log({LINKUP_API_KEY})
+
+console.log({ LINKUP_API_KEY: LINKUP_API_KEY ? "LOADED" : "MISSING" });
+
 app.get('/health', async () => {
-  return { status: 'ok', version: '1.2.0' };
+  // Updated version to 1.3.0 to trigger GitHub Actions
+  return { status: 'ok', version: '1.3.0' };
 });
 
 app.get('/', async () => {
   return {
     name: 'JobSearch API',
-    description: 'Powered by Linkup. Search for jobs and companies.',
+    // Added a custom message to ensure git detects a change
+    description: 'Powered by Linkup. Deployment automated via GitHub Actions by Ameowlia.',
     endpoints: [
       'GET  /health',
       'GET  /api/jobs?query=<role>&location=<location>',
@@ -124,7 +129,12 @@ const start = async () => {
   }
 };
 
-if (process.argv[1] === new URL(import.meta.url).pathname) {
+// Logic to check if module is being run directly
+const isMain = import.meta.url.endsWith(process.argv[1]) || 
+               process.argv[1]?.includes('app.js');
+
+if (isMain) {
   start();
 }
+
 export { app };
